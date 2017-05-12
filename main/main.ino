@@ -54,16 +54,9 @@ void instrucciones() {
 }
 
 void cambiar_tonos() {
-  String min_nota;
-  String max_nota;
   Serial.println("NOTA: Debes ingresar las notas en la siguiente notación: ");
   Serial.println("La mayor en la 4a octava = LA4");
   Serial.println("Do sostenido en la 2a octava = DOS2");  
   Serial.println("Ingresa la nota más baja: ");
-    min_nota = Serial.readString();
-    min_f = min_nota;
-    Serial.println("Ingresa la nota más alta: ");
-    max_nota = Serial.readString();
-  opcion = 1;
 }
 
