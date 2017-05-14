@@ -1,16 +1,24 @@
-#include "notas.h" 
-
-int pin_resistencia = 0;
-int pin_bocina = 3;
+int pin_resistencia_l = 0;
+int pin_resistencia_r = 1;
+int pin_bocina_l = 3;
+int pin_bocina_r = 5;
 byte opcion = 0;
 boolean encendido = false;
-int tono;
-int min_f = LA4;
-int max_f = LA7;
+int tono_l;
+int tono_r;
+int min_f_l = 0;
+int max_f_l = 2000;
+int min_f_r = 2000;
+int max_f_r = 4000;
 
 void setup() {
-  pinMode(pin_bocina, OUTPUT);
-  Serial.begin(9600);  
+  pinMode(pin_bocina_l, OUTPUT);
+  pinMode(pin_bocina_r, OUTPUT);
+  Serial.begin(9600);
+  Serial.println("\t\tINSTRUMETO THEREMÍN");
+  Serial.println("Hecho por Alan Castillo Montes y Daniel Vargas Castro");
+  Serial.println("como proyecto final para el laboratorio de microcomputadoras.");
+  Serial.println("Facultad de Ingeniería, UNAM. Semestre 2017-2.");
   instrucciones();
 }
 
@@ -20,17 +28,15 @@ void loop() {
     switch (opcion) {
       case '0':
         encendido = false;
-        noTone(pin_bocina);
-        Serial.println("Bocina apagada.");
+        noTone(pin_bocina_l);
+        noTone(pin_bocina_r);
+        Serial.println("Bocinas apagadas.");
         break;
       case '1':
         encendido = true;
-        Serial.println("Bocina encendida.");
+        Serial.println("Bocinas encendidas.");
         break;
       case '2':
-        cambiar_tonos();
-        break;
-      case '3':
         instrucciones();
         break;
       default:
@@ -38,8 +44,14 @@ void loop() {
     }
   }
   if (encendido) {
-    tono = map (analogRead(pin_resistencia), 0, 1023, min_f, max_f);
-    tone(pin_bocina, tono);
+    tono_l = map (analogRead(pin_resistencia_l), 0, 1023, min_f_l, max_f_l);
+    tono_r = map (analogRead(pin_resistencia_r), 0, 1023, min_f_r, max_f_r);
+    tone(pin_bocina_l, tono_l);
+    delay(5);
+    noTone(pin_bocina_l);
+    tone(pin_bocina_r, tono_r);
+    delay(5);
+    noTone(pin_bocina_r);
   }
 
 }
@@ -47,16 +59,9 @@ void loop() {
 void instrucciones() {
   Serial.println("\nINSTRUCCIONES:");
   Serial.println("Teclea el número que corresponda a la acción que deseas realizar:");
-  Serial.println("\t0: para apagar la bocina.");
-  Serial.println("\t1: para prender la bocina.");
-  Serial.println("\t2: para cambiar el rango de la escala.");
-  Serial.println("\t3: para mostrar de nuevo las instrucciones");
-}
-
-void cambiar_tonos() {
-  Serial.println("NOTA: Debes ingresar las notas en la siguiente notación: ");
-  Serial.println("La mayor en la 4a octava = LA4");
-  Serial.println("Do sostenido en la 2a octava = DOS2");  
-  Serial.println("Ingresa la nota más baja: ");
+  Serial.println("\t0: para apagar las bocinas.");
+  Serial.println("\t1: para prender las bocinas.");
+  Serial.println("\t2: para mostrar de nuevo las instrucciones.");
+  Serial.println("Utiliza las perillas para controlar el volumen de cada bocina.");
 }
 
